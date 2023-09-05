@@ -14,11 +14,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf((csrf) -> csrf.disable()).cors((cors) -> cors.disable())
+        http
+                .headers((header) -> header.frameOptions((frame) -> frame.sameOrigin()))
+                .csrf((csrf) -> csrf.disable()).cors((cors) -> cors.disable())
                 .authorizeHttpRequests(
                         (request) -> request
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-//                                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(
