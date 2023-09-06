@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     public Long register(UserRequestDto userRequestDto){
@@ -19,6 +20,7 @@ public class UserService {
                             throw new RuntimeException("중복된 회원입니다.");
                         });
 
+        userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword())); //TODO : passwordEncoder 가 어느 객체에 있어야 할 지 생각해보자.
         Users entity = Users.of(userRequestDto);
 
         userRepository.save(entity);
