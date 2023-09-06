@@ -4,6 +4,7 @@ import com.exam.security.dto.user.request.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class UserEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +24,12 @@ public class UserEntity {
     private String password;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
     @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime regDate;
 
     @Builder
-    public UserEntity(Long id, String email, String password, String name, LocalDateTime regDate) {
+    public Users(Long id, String email, String password, String name, LocalDateTime regDate) {
         isEmail(email);
         isPassword(password);
 
@@ -38,11 +40,11 @@ public class UserEntity {
         this.regDate = regDate;
     }
 
-    public static UserEntity of(UserRequestDto userRequestDto){
+    public static Users of(UserRequestDto userRequestDto){
         isEmail(userRequestDto.getEmail());
         isPassword(userRequestDto.getPassword());
 
-        return UserEntity.builder()
+        return Users.builder()
                 .email(userRequestDto.getEmail())
                 .password(userRequestDto.getPassword())
                 .name(userRequestDto.getName())
@@ -53,7 +55,7 @@ public class UserEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
+        Users that = (Users) o;
         return Objects.equals(id, that.id);
     }
 
