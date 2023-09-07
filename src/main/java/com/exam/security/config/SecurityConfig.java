@@ -4,6 +4,7 @@ import jakarta.servlet.DispatcherType;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,14 +25,16 @@ public class SecurityConfig {
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/users")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/users")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/login-proc")).permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(
                         (login) -> login
                                 .loginPage("/view/login").permitAll()
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/view/dashboard", true))
+                                .loginProcessingUrl("/api/login-proc")
+                                .successForwardUrl("/view/dashboard"))
                 .logout(
                         Customizer.withDefaults()
                 );

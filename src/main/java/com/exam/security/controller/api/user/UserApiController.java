@@ -38,4 +38,12 @@ public class UserApiController {
 
         return ResponseEntity.ok(id);
     }
+
+    @PostMapping("/api/login-proc")
+    public void loginProcess(
+            HttpServletRequest request,
+            UserRequestDto userRequestDto
+    ) throws Exception {
+        userService.validUser(userRequestDto);
+    }
 }
