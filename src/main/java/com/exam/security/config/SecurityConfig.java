@@ -16,10 +16,14 @@ public class SecurityConfig {
         http.csrf((csrf) -> csrf.disable()).cors((cors) -> cors.disable())
                 .authorizeHttpRequests((request) -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers("/status","/css/**","/js/**","/images/**","/view/join","/api/join").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((login) -> login
                         .loginPage("/view/login").permitAll()
-                        .defaultSuccessUrl("/view/dashboard",true).permitAll()
+                        .usernameParameter("userId")
+                        .passwordParameter("password")
+                        .loginProcessingUrl("/api/login").permitAll()
+                        .defaultSuccessUrl("/view/dashboard", true).permitAll()
                 ).logout((logout) -> Customizer.withDefaults());
         return http.build();
     }
