@@ -13,10 +13,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.disable()).cors((cors) -> cors.disable())
+        http
+                .headers((header) -> header.frameOptions((frameOption) -> frameOption.sameOrigin()))
+                .csrf((csrf) -> csrf.disable()).cors((cors) -> cors.disable())
                 .authorizeHttpRequests((request) -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/status","/css/**","/js/**","/images/**","/view/join","/api/join").permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/status")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/view/join")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/join")).permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((login) -> login
                         .loginPage("/view/login").permitAll()
