@@ -1,12 +1,10 @@
 package com.exam.security.controller.login;
 
-import com.exam.security.dto.MemberDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,17 +14,7 @@ public class LoginController {
     public String login(
             HttpServletRequest request
     ) throws Exception {
-        return "/login/login";
-    }
-
-    @PostMapping("/api/login")
-    public String loginProc(
-            HttpServletRequest request,
-            MemberDto dto
-    ) throws Exception {
-        if("user".equals(dto.getUserId())){
-            return "/main/dashboard";
-        }
+        log.info("[view] request login page");
         return "/login/login";
     }
 
@@ -34,6 +22,7 @@ public class LoginController {
     public String join(
             HttpServletRequest request
     ) throws Exception {
+        log.info("[view] request joing page");
         return "/login/join";
     }
 }
