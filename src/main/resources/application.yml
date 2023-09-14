@@ -15,6 +15,10 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+  sql:
+    init:
+      mode: embedded
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -22,6 +26,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+    defer-datasource-initialization: true
 
 logging:
   level:
