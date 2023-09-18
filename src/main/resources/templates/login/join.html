@@ -53,9 +53,11 @@
               .then(response => {
                 if (response.status == 200) {
                   window.location.href = '/view/login';
-                  alert("회원가입 성공")
-                } else {
-                  alert("회원가입 실패")
+                  alert("회원가입 성공.")
+                } else if(response.status == 400) {
+                  alert("동일한 ID가 존재합니다.")
+                } else{
+                  alert("회원가입에 실패 했습니다.")
                 }
               })
               .catch(error => console.log(error))
