@@ -24,6 +24,8 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/status")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/view/join")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/join")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/view/admin/**")).hasRole("ADMIN")
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/view/user/**")).hasRole("USER")
                         .anyRequest().authenticated()
                 ).formLogin((login) -> login
                         .loginPage("/view/login").permitAll()

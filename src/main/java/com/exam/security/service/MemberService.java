@@ -28,7 +28,7 @@ public class MemberService {
                 .ifPresent(member -> {throw new IdDuplicateException("이미 존재하는 회원입니다.", ErrorCode.ID_DUPLICATE);});
 
         dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-        dto.setRoles("user"); // admin / user 나누기 전까지 임시 하드코딩
+        dto.setRoles("USER"); // admin / user 나누기 전까지 임시 하드코딩
 
         Member member = memberRepository.save(Member.of(dto));
 
