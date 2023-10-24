@@ -1,5 +1,6 @@
 package com.exam.security.exception;
 
+import com.exam.security.exception.jwt.JwtException;
 import com.exam.security.exception.login.IdDuplicateException;
 import com.exam.security.exception.login.ErrorCode;
 import com.exam.security.exception.login.ErrorResponse;
@@ -23,6 +24,13 @@ public class ExceptionHandler {
     public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e){
         log.error("Forbidden Exception", e);
         ErrorResponse response = new ErrorResponse(ErrorCode.FORBIDDEN_ERROR);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtException(JwtException e) {
+        log.error("JWT Exception", e);
+        ErrorResponse response = new ErrorResponse(ErrorCode.JWT_ERROR);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }
